@@ -35,6 +35,17 @@ Local stdio (e.g. for Claude Desktop):
 ```bash
 MCP_TRANSPORT=stdio python3.12 vampi_mcp_server.py
 ```
+## Connecting to Claude Desktop
+
+You need to tell Claude Desktop how to connect to this MCP Server. To do so, in your client (Claude -> Settings -> Developer) add the JSON stanza below to your `claude_desktop_config.json` (on a Mac it'll be in `~/Library/Application Support/Claude/`), restart your Claude Desktop and it *should* just work. If not, see [Debugging](#debugging) section below.
+```
+  "mcpServers": {
+    "mcp-vampi": {
+      "command": "/opt/homebrew/bin/npx",
+      "args": ["-y", "mcp-remote", "http://<your_mcp_server_ip>:8000/mcp", "--allow-http"]
+    }
+  },
+```
 
 ## Configuration
 
@@ -43,8 +54,11 @@ MCP_TRANSPORT=stdio python3.12 vampi_mcp_server.py
 | `VAMPI_BASE_URL` | `http://172.31.43.19:5000`  | VAmPI instance base URL          |
 | `VAMPI_TIMEOUT`  | `15`                        | Per-request timeout (seconds)    |
 | `MCP_TRANSPORT`  | `streamable-http`           | `streamable-http` or `stdio`     |
-| `MCP_HOST`       | `127.0.0.1`                 | HTTP bind host                   |
+| `MCP_HOST`       | `0.0.0.0`                   | HTTP bind host                   |
 | `MCP_PORT`       | `8000`                      | HTTP bind port                   |
+
+NOTE: from my experience, the remote Claude Desktop cannot connect unless the MCP_HOST is 0.0.0.0
+Please submit a PR if you have an alternative default setting that will work.
 
 ## Tools
 
@@ -67,3 +81,14 @@ obtain it from `login`'s `auth_token`.
 > VAmPI is deliberately insecure and intended only for security training in a
 > controlled environment. The `debug_users` endpoint, for example, returns
 > plaintext passwords by design.
+
+## Debugging
+
+Various problems can and will happen in a networked environment (connectivity, disconnects, timeouts, latency, etc). While not exhaustive, here are some high probability places to start looking when things aren't working as designed:
+* Ask Claude! Give as full a description with versions of what you're trying to do and paste in the exact errors you're getting. 
+* Check the logs/stdout on the server running MCP and vAmPI and on your client (Mac or Windows running Claude Desktop)
+* Test one fix at a time (i.e. restart client (if that doesn't fix); restart client and server (if that doesn't fix); make a change to MCP_HOST, restart server, restart client (you get it). Verify that changing that single setting works or does not each time. Iterate!
+
+## Testing your understanding
+
+* Learning: have a hypothesis...test your understanding by changing something, seeing if according to your theory, the system breaks in the way you expected. Write down what you think will happen before the test FIRST and be honest if results did or didn't match what you predicted. We have a tendency to assume we were correct and knew something all along, when in reality, we did not. Maybe just I struggle with this more than most, but it's important to not fool ourselves first. And we're the easiest one to fool. 😝
