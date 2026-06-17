@@ -16,8 +16,8 @@ talking to a running VAmPI instance at `http://172.31.43.19:5000` by default.
 ## Install
 
 ```bash
-python3 -m venv venv
-. venv/bin/activate          # Windows: venv\Scripts\activate
+python3.12 -m venv .venv
+. .venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -26,14 +26,14 @@ pip install -r requirements.txt
 Streamable-HTTP (default), endpoint served at `/mcp`:
 
 ```bash
-python vampi_mcp_server.py
-# serves on http://127.0.0.1:8000/mcp
+python3.12 vampi_mcp_server.py
+# serves on http://0.0.0.0:8000/mcp
 ```
 
 Local stdio (e.g. for Claude Desktop):
 
 ```bash
-MCP_TRANSPORT=stdio python vampi_mcp_server.py
+MCP_TRANSPORT=stdio python3.12 vampi_mcp_server.py
 ```
 
 ## Configuration
