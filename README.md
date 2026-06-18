@@ -46,6 +46,7 @@ You need to tell Claude Desktop how to connect to this MCP Server. To do so, in 
     }
   },
 ```
+To more clearly understand how the three components are wired together, please refer to [architectural view](ARCHITECTURE.md).
 
 ## Configuration
 
